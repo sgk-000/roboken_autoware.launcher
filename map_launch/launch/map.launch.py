@@ -37,33 +37,6 @@ def generate_launch_description():
         ],
     )
 
-    lanelet2_map_loader = ComposableNode(
-        package='map_loader',
-        plugin='Lanelet2MapLoaderNode',
-        name='lanelet2_map_loader',
-        remappings=[('output/lanelet2_map', 'vector_map')],
-        parameters=[
-            {
-                'center_line_resolution': 5.0,
-                'lanelet2_map_path': LaunchConfiguration('lanelet2_map_path'),
-            }
-        ],
-        extra_arguments=[{
-            'use_intra_process_comms': LaunchConfiguration('use_intra_process')
-        }],
-    )
-
-    lanelet2_map_visualization = ComposableNode(
-        package='map_loader',
-        plugin='Lanelet2MapVisualizationNode',
-        name='lanelet2_map_visualization',
-        remappings=[('input/lanelet2_map', 'vector_map'),
-                    ('output/lanelet2_map_marker', 'vector_map_marker')],
-        extra_arguments=[{
-            'use_intra_process_comms': LaunchConfiguration('use_intra_process')
-        }],
-    )
-
     pointcloud_map_loader = ComposableNode(
         package='map_loader',
         plugin='PointCloudMapLoaderNode',
@@ -100,8 +73,6 @@ def generate_launch_description():
         package='rclcpp_components',
         executable=LaunchConfiguration('container_executable'),
         composable_node_descriptions=[
-            lanelet2_map_loader,
-            lanelet2_map_visualization,
             pointcloud_map_loader,
             map_tf_generator,
         ],
@@ -113,9 +84,6 @@ def generate_launch_description():
 
     return launch.LaunchDescription([
         add_launch_arg('map_path', '', 'path to map directory'),
-        add_launch_arg('lanelet2_map_path', [
-                       LaunchConfiguration('map_path'), '/lanelet2_map.osm'],
-                       'path to lanelet2 map file'),
         add_launch_arg('pointcloud_map_path', [
                        LaunchConfiguration('map_path'), '/pointcloud_map.pcd'],
                        'path to pointcloud map file'),
