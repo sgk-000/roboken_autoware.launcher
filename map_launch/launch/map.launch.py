@@ -26,17 +26,6 @@ from launch_ros.descriptions import ComposableNode
 
 
 def generate_launch_description():
-    map_hash_generator = Node(
-        package='map_loader',
-        executable='map_hash_generator',
-        name='map_hash_generator',
-        parameters=[
-            {
-                'lanelet2_map_path': LaunchConfiguration('lanelet2_map_path'),
-            }
-        ],
-    )
-
     pointcloud_map_loader = ComposableNode(
         package='map_loader',
         plugin='PointCloudMapLoaderNode',
@@ -102,6 +91,5 @@ def generate_launch_description():
         GroupAction([
             PushRosNamespace('map'),
             container,
-            map_hash_generator,
         ])
     ])

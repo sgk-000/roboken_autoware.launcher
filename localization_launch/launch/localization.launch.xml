@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <launch>
+  <arg name="input_sensor_points_topic" default="" />
+  <arg name="input_vehicle_twist_topic" default="" />
+  <arg name="input_imu_topic" default=""/>
+  <arg name="output_downsample_sensor_points_topic" default="" />
+
   <!-- localization module -->
   <group>
     <push-ros-namespace namespace="localization"/>
@@ -7,6 +12,8 @@
     <group>
       <push-ros-namespace namespace="util"/>
       <include file="$(find-pkg-share localization_launch)/launch/util/util.launch.xml">
+        <arg name="input_sensor_points_topic" value="$(var input_sensor_points_topic)" />
+        <arg name="output_downsample_sensor_points_topic" value="$(var output_downsample_sensor_points_topic)" />
       </include>
     </group>
     <!-- pose_estimator module -->
@@ -19,6 +26,8 @@
     <group>
       <push-ros-namespace namespace="twist_estimator"/>
       <include file="$(find-pkg-share localization_launch)/launch/twist_estimator/twist_estimator.launch.xml">
+        <arg name="input_vehicle_twist_topic" value="$(var input_vehicle_twist_topic)" />
+        <arg name="input_imu_topic" value="$(var input_imu_topic)" />
       </include>
     </group>
     <!-- pose_twist_fusion_filter module -->

@@ -32,12 +32,12 @@ def generate_launch_description():
         parameters=[{
             'input_frame': LaunchConfiguration('base_frame'),
             'output_frame': LaunchConfiguration('base_frame'),
-            'min_x': -60.0,
-            'max_x': 60.0,
-            'min_y': -60.0,
-            'max_y': 60.0,
+            'min_x': -40.0,
+            'max_x': 40.0,
+            'min_y': -40.0,
+            'max_y': 40.0,
             'min_z': -30.0,
-            'max_z': 50.0,
+            'max_z': 30.0,
             'negative': False,
         }],
         extra_arguments=[{
@@ -50,14 +50,14 @@ def generate_launch_description():
         name='voxel_grid_downsample_filter',
         remappings=[
             ('input',
-             LaunchConfiguration('output_measurement_range_sensor_points_topic')),
+             LaunchConfiguration('input_sensor_points_topic')),
             ('output',
              LaunchConfiguration('output_voxel_grid_downsample_sensor_points_topic')),
         ],
         parameters=[{
-            'voxel_size_x': 3.0,
-            'voxel_size_y': 3.0,
-            'voxel_size_z': 3.0,
+            'voxel_size_x': 0.2,
+            'voxel_size_y': 0.2,
+            'voxel_size_z': 0.2,
         }],
         extra_arguments=[{
             'use_intra_process_comms': LaunchConfiguration('use_intra_process')
