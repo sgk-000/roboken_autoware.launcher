@@ -11,13 +11,13 @@
   <arg name="base_frame" default="base_link" description="Vehicle reference frame, for processing crop_box" />
 
   <!-- container -->
-  <arg name="container" default="/sensing/lidar/pointcloud_preprocessor/velodyne_node_container"  description="container name"/>
+  <arg name="container" default="/sensing/velodyne_lower/pointcloud_preprocessor/velodyne_node_container"  description="container name"/>
 
   <!-- option -->
   <arg name="use_intra_process" default="true" description="use ROS2 component container communication"/>
 
   <!-- pose_initializer -->
-  <!-- <include file="$(find-pkg-share pose_initializer)/launch/pose_initializer.launch.xml" /> -->
+  <include file="$(find-pkg-share pose_initializer)/launch/pose_initializer.launch.xml" />
 
   <!-- util -->
   <include file="$(find-pkg-share localization_launch)/launch/util/util.launch.py" >

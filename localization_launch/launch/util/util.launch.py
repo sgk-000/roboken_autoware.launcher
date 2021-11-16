@@ -55,9 +55,9 @@ def generate_launch_description():
              LaunchConfiguration('output_voxel_grid_downsample_sensor_points_topic')),
         ],
         parameters=[{
-            'voxel_size_x': 0.2,
-            'voxel_size_y': 0.2,
-            'voxel_size_z': 0.2,
+            'voxel_size_x': 0.1,
+            'voxel_size_y': 0.1,
+            'voxel_size_z': 0.1,
         }],
         extra_arguments=[{
             'use_intra_process_comms': LaunchConfiguration('use_intra_process')
