@@ -4,6 +4,7 @@
   <arg name="input_vehicle_twist_topic" default="" />
   <arg name="input_imu_topic" default=""/>
   <arg name="output_downsample_sensor_points_topic" default="" />
+  <arg name="logging" default="false" description="logging flag" />
 
   <!-- localization module -->
   <group>
@@ -14,6 +15,7 @@
       <include file="$(find-pkg-share localization_launch)/launch/util/util.launch.xml">
         <arg name="input_sensor_points_topic" value="$(var input_sensor_points_topic)" />
         <arg name="output_downsample_sensor_points_topic" value="$(var output_downsample_sensor_points_topic)" />
+        <arg name="logging" value="$(var logging)" />
       </include>
     </group>
     <!-- pose_estimator module -->

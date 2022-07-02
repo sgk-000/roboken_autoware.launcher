@@ -16,6 +16,7 @@ import launch
 from launch.conditions import LaunchConfigurationNotEquals
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import LoadComposableNodes
+from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
 
 
@@ -80,14 +81,55 @@ def generate_launch_description():
             'use_intra_process_comms': LaunchConfiguration('use_intra_process')
         }],
     )
+    ransac_ground_filter_component = ComposableNode(
+        package='pointcloud_preprocessor',
+        plugin='pointcloud_preprocessor::RANSACGroundFilterComponent',
+        name='ransac_ground_filter',
+        remappings=[
+            ('input', '/sensing/velodyne_lower/rectified/pointcloud'),
+            ('output', '/sensing/velodyne_lower/no_ground/pointcloud'),
+        ],
+        parameters=[{
+            'outlier_threshold': 0.1,
+            'min_points': 400,
+            'min_inliers': 200,
+            'max_iterations': 50,
+            'height_threshold': 0.3,
+            'plane_slope_threshold': 10.0,
+            'voxel_size_x': 0.1,
+            'voxel_size_y': 0.1,
+            'voxel_size_z': 0.1,
+            'debug': False,
+        }],
+        extra_arguments=[{
+            'use_intra_process_comms': LaunchConfiguration('use_intra_process')
+        }],
+    )
 
     composable_nodes = [crop_box_component,
                         voxel_grid_downsample_component,
-                        random_downsample_component]
+                        random_downsample_component,
+                        ransac_ground_filter_component]
 
     load_composable_nodes = LoadComposableNodes(
         condition=LaunchConfigurationNotEquals('container', ''),
         composable_node_descriptions=composable_nodes,
         target_container=LaunchConfiguration('container'),
     )
-    return launch.LaunchDescription([load_composable_nodes])
+
+    util_container = ComposableNodeContainer(
+            name='localization_util_container',
+            namespace='',
+            package='rclcpp_components',
+            executable='component_container',
+            composable_node_descriptions=[crop_box_component,
+                        voxel_grid_downsample_component,
+                        random_downsample_component,
+                        ransac_ground_filter_component],
+            output='both',
+    )
+
+    if(LaunchConfiguration('logging')):
+        return launch.LaunchDescription([util_container])
+    else:
+        return launch.LaunchDescription([load_composable_nodes])
