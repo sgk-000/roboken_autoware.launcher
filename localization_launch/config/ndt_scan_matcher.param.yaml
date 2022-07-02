@@ -31,4 +31,4 @@
     omp_neighborhood_search_method: 0
 
     # Number of threads used for parallel computing
-    omp_num_threads: 4
+    omp_num_threads: 8
